@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./;proto";
+
+message ShopByID {
+    int32 ShopId = 1;
+}
+
+message ReqAllShop{}
+
+message Shop{
+    int32 Id = 1;
+    string Name = 2;
+}
+
+message AllShop {
+    repeated Shop Shop = 1;
+}
+
+service ShopService{
+    rpc GetAllShop(ReqAllShop) returns (AllShop);
+    rpc GetShopByID(ShopByID) returns (Shop) ;
+}
