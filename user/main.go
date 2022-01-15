@@ -36,7 +36,7 @@ func main() {
 			return
 		}
 		rw.WriteHeader(http.StatusOK)
-		json.NewEncoder(rw).Encode(res)
+		json.NewEncoder(rw).Encode(res.Shop)
 	})
 
 	//getShopById
@@ -61,7 +61,6 @@ func main() {
 		req := proto.ReqShopProducts{
 			ShopId: int32(shopID),
 		}
-		fmt.Println(req.ShopId)
 		res, err := productClinet.GetShopProductsByShopId(r.Context(), &req)
 		if err != nil {
 			fmt.Println(err)
@@ -70,7 +69,7 @@ func main() {
 			return
 		}
 		rw.WriteHeader(http.StatusOK)
-		json.NewEncoder(rw).Encode(res)
+		json.NewEncoder(rw).Encode(res.Products)
 	})
 
 	fmt.Println("Running client on port : 8081")

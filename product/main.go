@@ -24,7 +24,6 @@ func main() {
 	go func() {
 		router := chi.NewRouter()
 		router.Get("/products", func(rw http.ResponseWriter, r *http.Request) {
-			// shopId := param.Int(r, "shopID")
 			rw.WriteHeader(http.StatusOK)
 			json.NewEncoder(rw).Encode(products)
 		})
@@ -65,7 +64,6 @@ func (p *Product) GetShopProductsByShopId(ctx context.Context, in *proto.ReqShop
 	shopId := in.GetShopId()
 	var prdts []*proto.Product
 	for _, pr := range products {
-		fmt.Println(shopId, " hey ", pr.ShopId)
 		if pr.ShopId == shopId {
 			prdts = append(prdts, pr)
 		}
