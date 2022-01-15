@@ -13,6 +13,7 @@ message ReqAllShop{}
 message Shop{
     int32 Id = 1;
     string Name = 2;
+    int32 OwnerId = 3;
 }
 
 message AllShop {
