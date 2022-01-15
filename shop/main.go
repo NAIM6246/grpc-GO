@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/naim6246/grpc-GO/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -16,6 +19,19 @@ type Shop struct{}
 var shops []*proto.Shop
 
 func main() {
+
+	//running shops api in another go routine on port 8082
+	go func() {
+		router := chi.NewRouter()
+		router.Get("/shops", func(rw http.ResponseWriter, r *http.Request) {
+			// shopId := param.Int(r, "shopID")
+			rw.WriteHeader(http.StatusOK)
+			json.NewEncoder(rw).Encode(shops)
+		})
+		fmt.Println("http serving for shops on port : 8083")
+		http.ListenAndServe(":8083", router)
+	}()
+
 	listener, err := net.Listen("tcp", ":4040")
 	if err != nil {
 		panic(err)
