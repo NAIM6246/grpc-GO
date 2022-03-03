@@ -7,6 +7,16 @@ import (
 	"github.com/naim6246/grpc-GO/proto"
 )
 
+type User struct{
+	Id int32
+	Name string
+	Password string
+}
+
+func UsersTable() string {
+	return "users"
+}
+
 var Users []*proto.ResUser
 var Wg sync.WaitGroup
 
@@ -19,3 +29,5 @@ func init() {
 		})
 	}
 }
+
+

@@ -115,3 +115,13 @@ func (s *Shop) GetShopByID(ctx context.Context, in *proto.ShopByID) (*proto.Shop
 	}
 	return nil, errors.New("no shop found")
 }
+
+func (s *Shop) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.Shop, error){
+	id := in.GetOwnerId()
+	for _, s := range shops {
+		if s.OwnerId == id {
+			return s, nil
+		}
+	}
+	return nil, errors.New("no shop found")
+}

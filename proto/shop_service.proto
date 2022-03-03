@@ -20,7 +20,12 @@ message AllShop {
     repeated Shop Shop = 1;
 }
 
+message ShopByOwnerId {
+    int32 OwnerId = 1;
+}
+
 service ShopService{
     rpc GetAllShop(ReqAllShop) returns (AllShop);
     rpc GetShopByID(ShopByID) returns (Shop) ;
+    rpc GetShopByOwnerId(ShopByOwnerId) returns(Shop);
 }
