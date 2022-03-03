@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/naim6246/grpc-GO/proto"
+	"github.com/naim6246/grpc-GO/user/mapper"
 	"github.com/naim6246/grpc-GO/user/models"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -28,9 +29,12 @@ func (u *UserService) StartGrpcUserService() {
 }
 
 func (u *UserService) GetUser(ctx context.Context, in *proto.ReqUser) (*proto.ResUser, error) {
-	return u.GetUserById(in.GetId())
+	user, err := u.GetUserById(in.GetId())
+	if err != nil {
+		return nil, err
+	}
+	return mapper.MapUserToGrpcModel(user), nil
 }
-
 
 func (u *UserService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.Shop, error) {
 	return (*u.shopClinet).GetShopByOwnerId(ctx, in)
