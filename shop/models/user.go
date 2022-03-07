@@ -1,9 +1,5 @@
 package models
 
-import (
-	"sync"
-)
-
 type User struct {
 	Id       int32
 	Name     string
@@ -14,4 +10,7 @@ func UsersTable() string {
 	return "users"
 }
 
-var Wg sync.WaitGroup
+type UserDto struct {
+	Id   int32
+	Name string
+}

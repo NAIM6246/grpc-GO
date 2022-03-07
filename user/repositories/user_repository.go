@@ -1,17 +1,18 @@
 package repositories
 
 import (
+	"github.com/jinzhu/gorm"
 	"github.com/naim6246/grpc-GO/user/conn"
 	"github.com/naim6246/grpc-GO/user/models"
 )
 
 type UserRepository struct {
-	db *conn.DB
+	db *gorm.DB
 }
 
 func NewUserRepository(db *conn.DB) *UserRepository {
 	return &UserRepository{
-		db: db,
+		db: db.Table(models.UsersTable()),
 	}
 }
 

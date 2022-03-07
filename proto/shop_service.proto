@@ -25,7 +25,5 @@ message ShopByOwnerId {
 }
 
 service ShopService{
-    rpc GetAllShop(ReqAllShop) returns (AllShop);
-    rpc GetShopByID(ShopByID) returns (Shop) ;
     rpc GetShopByOwnerId(ShopByOwnerId) returns(Shop);
 }

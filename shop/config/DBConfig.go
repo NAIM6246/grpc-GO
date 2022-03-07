@@ -22,7 +22,7 @@ func mapDBConfig() {
 	dbConfig = &DBConfig{
 		Server:   "",
 		Port:     0,
-		DBName:   "UserDatabase",
+		DBName:   "ShopDatabase",
 		User:     "",
 		Password: "",
 	}
