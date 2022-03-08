@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/naim6246/grpc-GO/proto"
+	"github.com/naim6246/grpc-GO/shop/mapper"
 	"github.com/naim6246/grpc-GO/shop/models"
 	"github.com/naim6246/grpc-GO/shop/repositories"
 	"google.golang.org/grpc"
@@ -46,7 +47,7 @@ func (s *ShopService) GetAllShops() ([]*models.Shop, error) {
 	return s.shopRepository.GetAll()
 }
 func (s *ShopService) GetShopByOwnerID(id int32) (*models.Shop, error) {
-	return s.shopRepository.GetByFilter("owner_id=?",id)
+	return s.shopRepository.GetByFilter("owner_id=?", id)
 }
 
 func (s *ShopService) GetShopDetails(shopId int32, ctx context.Context) (*models.ShopDetails, error) {
@@ -63,8 +64,22 @@ func (s *ShopService) GetShopDetails(shopId int32, ctx context.Context) (*models
 	return &models.ShopDetails{
 		Shop: shop,
 		User: &models.UserDto{
-			Id:   user.Id,
-			Name: user.Name,
+			Id:   user.GetId(),
+			Name: user.GetName(),
 		},
 	}, nil
+}
+
+func (s *ShopService) GetShopProduts(shopId int) ([]*models.Product, error) {
+	products, err := s.GetShopProductsByShopId(context.TODO(), &proto.ReqShopProducts{
+		ShopId: int32(shopId),
+	})
+	if err != nil {
+		return nil, err
+	}
+	var shopProducts []*models.Product
+	for _, product := range products.Products {
+		shopProducts = append(shopProducts, mapper.MapGrpcModelToProductModel(product))
+	}
+	return shopProducts, nil
 }

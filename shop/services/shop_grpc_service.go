@@ -40,3 +40,7 @@ func (s *ShopService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwne
 		OwnerId: shop.OwnerId,
 	}, nil
 }
+
+func (s *ShopService) GetShopProductsByShopId(ctx context.Context, in *proto.ReqShopProducts) (*proto.ShopProducts, error) {
+	return (*s.productClient).GetShopProductsByShopId(ctx, in)
+}

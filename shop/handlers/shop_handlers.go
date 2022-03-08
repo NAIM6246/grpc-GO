@@ -26,28 +26,23 @@ func NewShopHandler(shopService *services.ShopService) *ShopHandler {
 
 func (h *ShopHandler) Handler() {
 	router := chi.NewRouter()
-	router.Get("/shop", h.getAllShop)
-	router.Post("/shop", h.createShop)
-	router.Get("/shop/{shopId}", h.getShopById)
-	router.Get("/shop/{shopId}/details", h.getShopDetails)
-	router.Get("/shop/{shopId}/owner", h.getShopbyOwner)
+	router.Route("/shop", func(router chi.Router) {
+		router.Get("/", h.getAllShop)
+		router.Post("/", h.createShop)
+
+		router.Route("/{shopId}", func(r chi.Router) {
+			router.Get("/", h.getShopById)
+			router.Get("/details", h.getShopDetails)
+			router.Get("/products",h.getShopProducts)
+		})
+	})
 
 	fmt.Println("serving api server on port: 8083")
 	http.ListenAndServe(":8083", router)
 	Wg.Done()
 }
 
-func (h *ShopHandler) getShopbyOwner(w http.ResponseWriter, r *http.Request) {
-	id := param.Int(r, "shopId")
-	shop, err := h.shopService.GetShopByOwnerID(int32(id))
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(err)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(shop)
-}
+
 
 func (h *ShopHandler) createShop(w http.ResponseWriter, r *http.Request) {
 	var shop models.Shop
@@ -99,4 +94,16 @@ func (h *ShopHandler) getShopDetails(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(shop)
+}
+
+func (h *ShopHandler) getShopProducts(w http.ResponseWriter, r *http.Request) {
+	shopId := param.Int(r, "shopId")
+	products, err := h.shopService.GetShopProduts(shopId)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(err)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(products)
 }

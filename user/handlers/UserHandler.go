@@ -12,27 +12,11 @@ import (
 )
 
 type UserHandler struct {
-	// shopClinet    *proto.ShopServiceClient
-	// productClinet *proto.ProductServiceClient
 	userService *services.UserService
 }
 
 func NewUserHandler(userService *services.UserService) *UserHandler {
-	// connToshop, err := grpc.Dial("localhost:4040", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// shopClinet := proto.NewShopServiceClient(connToshop)
-
-	// connToProduct, err := grpc.Dial("localhost:4041", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// productClinet := proto.NewProductServiceClient(connToProduct)
-
 	return &UserHandler{
-		// shopClinet:    &shopClinet,
-		// productClinet: &productClinet,
 		userService: userService,
 	}
 }
@@ -70,9 +54,6 @@ func (u *UserHandler) createUser(w http.ResponseWriter, r *http.Request) {
 
 func (u *UserHandler) getShopByUserId(w http.ResponseWriter, r *http.Request) {
 	id := param.Int(r, "userId")
-	// req := proto.ShopByOwnerId{
-	// 	OwnerId: int32(id),
-	// }
 	res, err := u.userService.GetUserShopDetails(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
