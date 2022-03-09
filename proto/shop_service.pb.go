@@ -114,8 +114,9 @@ type Shop struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int32  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	Name string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	Id      int32  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	Name    string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	OwnerId int32  `protobuf:"varint,3,opt,name=OwnerId,proto3" json:"OwnerId,omitempty"`
 }
 
 func (x *Shop) Reset() {
@@ -162,6 +163,13 @@ func (x *Shop) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *Shop) GetOwnerId() int32 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
 }
 
 type AllShop struct {
@@ -211,6 +219,53 @@ func (x *AllShop) GetShop() []*Shop {
 	return nil
 }
 
+type ShopByOwnerId struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OwnerId int32 `protobuf:"varint,1,opt,name=OwnerId,proto3" json:"OwnerId,omitempty"`
+}
+
+func (x *ShopByOwnerId) Reset() {
+	*x = ShopByOwnerId{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_shop_service_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ShopByOwnerId) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShopByOwnerId) ProtoMessage() {}
+
+func (x *ShopByOwnerId) ProtoReflect() protoreflect.Message {
+	mi := &file_shop_service_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShopByOwnerId.ProtoReflect.Descriptor instead.
+func (*ShopByOwnerId) Descriptor() ([]byte, []int) {
+	return file_shop_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ShopByOwnerId) GetOwnerId() int32 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
 var File_shop_service_proto protoreflect.FileDescriptor
 
 var file_shop_service_proto_rawDesc = []byte{
@@ -218,21 +273,23 @@ var file_shop_service_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x22, 0x0a, 0x08, 0x53,
 	0x68, 0x6f, 0x70, 0x42, 0x79, 0x49, 0x44, 0x12, 0x16, 0x0a, 0x06, 0x53, 0x68, 0x6f, 0x70, 0x49,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x53, 0x68, 0x6f, 0x70, 0x49, 0x64, 0x22,
-	0x0c, 0x0a, 0x0a, 0x52, 0x65, 0x71, 0x41, 0x6c, 0x6c, 0x53, 0x68, 0x6f, 0x70, 0x22, 0x2a, 0x0a,
+	0x0c, 0x0a, 0x0a, 0x52, 0x65, 0x71, 0x41, 0x6c, 0x6c, 0x53, 0x68, 0x6f, 0x70, 0x22, 0x44, 0x0a,
 	0x04, 0x53, 0x68, 0x6f, 0x70, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x05, 0x52, 0x02, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x2a, 0x0a, 0x07, 0x41, 0x6c, 0x6c,
-	0x53, 0x68, 0x6f, 0x70, 0x12, 0x1f, 0x0a, 0x04, 0x53, 0x68, 0x6f, 0x70, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68, 0x6f, 0x70, 0x52,
-	0x04, 0x53, 0x68, 0x6f, 0x70, 0x32, 0x6b, 0x0a, 0x0b, 0x53, 0x68, 0x6f, 0x70, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x2f, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x53, 0x68,
-	0x6f, 0x70, 0x12, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x71, 0x41, 0x6c,
-	0x6c, 0x53, 0x68, 0x6f, 0x70, 0x1a, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x41, 0x6c,
-	0x6c, 0x53, 0x68, 0x6f, 0x70, 0x12, 0x2b, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x53, 0x68, 0x6f, 0x70,
-	0x42, 0x79, 0x49, 0x44, 0x12, 0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68, 0x6f,
-	0x70, 0x42, 0x79, 0x49, 0x44, 0x1a, 0x0b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68,
-	0x6f, 0x70, 0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x2f, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x01, 0x28, 0x09, 0x52, 0x04, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x4f, 0x77, 0x6e,
+	0x65, 0x72, 0x49, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x4f, 0x77, 0x6e, 0x65,
+	0x72, 0x49, 0x64, 0x22, 0x2a, 0x0a, 0x07, 0x41, 0x6c, 0x6c, 0x53, 0x68, 0x6f, 0x70, 0x12, 0x1f,
+	0x0a, 0x04, 0x53, 0x68, 0x6f, 0x70, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68, 0x6f, 0x70, 0x52, 0x04, 0x53, 0x68, 0x6f, 0x70, 0x22,
+	0x29, 0x0a, 0x0d, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x49, 0x64,
+	0x12, 0x18, 0x0a, 0x07, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x05, 0x52, 0x07, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x49, 0x64, 0x32, 0x44, 0x0a, 0x0b, 0x53, 0x68,
+	0x6f, 0x70, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35, 0x0a, 0x10, 0x47, 0x65, 0x74,
+	0x53, 0x68, 0x6f, 0x70, 0x42, 0x79, 0x4f, 0x77, 0x6e, 0x65, 0x72, 0x49, 0x64, 0x12, 0x14, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68, 0x6f, 0x70, 0x42, 0x79, 0x4f, 0x77, 0x6e, 0x65,
+	0x72, 0x49, 0x64, 0x1a, 0x0b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x68, 0x6f, 0x70,
+	0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x2f, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -247,21 +304,20 @@ func file_shop_service_proto_rawDescGZIP() []byte {
 	return file_shop_service_proto_rawDescData
 }
 
-var file_shop_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_shop_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_shop_service_proto_goTypes = []interface{}{
-	(*ShopByID)(nil),   // 0: proto.ShopByID
-	(*ReqAllShop)(nil), // 1: proto.ReqAllShop
-	(*Shop)(nil),       // 2: proto.Shop
-	(*AllShop)(nil),    // 3: proto.AllShop
+	(*ShopByID)(nil),      // 0: proto.ShopByID
+	(*ReqAllShop)(nil),    // 1: proto.ReqAllShop
+	(*Shop)(nil),          // 2: proto.Shop
+	(*AllShop)(nil),       // 3: proto.AllShop
+	(*ShopByOwnerId)(nil), // 4: proto.ShopByOwnerId
 }
 var file_shop_service_proto_depIdxs = []int32{
 	2, // 0: proto.AllShop.Shop:type_name -> proto.Shop
-	1, // 1: proto.ShopService.GetAllShop:input_type -> proto.ReqAllShop
-	0, // 2: proto.ShopService.GetShopByID:input_type -> proto.ShopByID
-	3, // 3: proto.ShopService.GetAllShop:output_type -> proto.AllShop
-	2, // 4: proto.ShopService.GetShopByID:output_type -> proto.Shop
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
+	4, // 1: proto.ShopService.GetShopByOwnerId:input_type -> proto.ShopByOwnerId
+	2, // 2: proto.ShopService.GetShopByOwnerId:output_type -> proto.Shop
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -321,6 +377,18 @@ func file_shop_service_proto_init() {
 				return nil
 			}
 		}
+		file_shop_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ShopByOwnerId); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -328,7 +396,7 @@ func file_shop_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_shop_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -354,8 +422,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ShopServiceClient interface {
-	GetAllShop(ctx context.Context, in *ReqAllShop, opts ...grpc.CallOption) (*AllShop, error)
-	GetShopByID(ctx context.Context, in *ShopByID, opts ...grpc.CallOption) (*Shop, error)
+	GetShopByOwnerId(ctx context.Context, in *ShopByOwnerId, opts ...grpc.CallOption) (*Shop, error)
 }
 
 type shopServiceClient struct {
@@ -366,18 +433,9 @@ func NewShopServiceClient(cc grpc.ClientConnInterface) ShopServiceClient {
 	return &shopServiceClient{cc}
 }
 
-func (c *shopServiceClient) GetAllShop(ctx context.Context, in *ReqAllShop, opts ...grpc.CallOption) (*AllShop, error) {
-	out := new(AllShop)
-	err := c.cc.Invoke(ctx, "/proto.ShopService/GetAllShop", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shopServiceClient) GetShopByID(ctx context.Context, in *ShopByID, opts ...grpc.CallOption) (*Shop, error) {
+func (c *shopServiceClient) GetShopByOwnerId(ctx context.Context, in *ShopByOwnerId, opts ...grpc.CallOption) (*Shop, error) {
 	out := new(Shop)
-	err := c.cc.Invoke(ctx, "/proto.ShopService/GetShopByID", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.ShopService/GetShopByOwnerId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -386,57 +444,35 @@ func (c *shopServiceClient) GetShopByID(ctx context.Context, in *ShopByID, opts 
 
 // ShopServiceServer is the server API for ShopService service.
 type ShopServiceServer interface {
-	GetAllShop(context.Context, *ReqAllShop) (*AllShop, error)
-	GetShopByID(context.Context, *ShopByID) (*Shop, error)
+	GetShopByOwnerId(context.Context, *ShopByOwnerId) (*Shop, error)
 }
 
 // UnimplementedShopServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedShopServiceServer struct {
 }
 
-func (*UnimplementedShopServiceServer) GetAllShop(context.Context, *ReqAllShop) (*AllShop, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllShop not implemented")
-}
-func (*UnimplementedShopServiceServer) GetShopByID(context.Context, *ShopByID) (*Shop, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetShopByID not implemented")
+func (*UnimplementedShopServiceServer) GetShopByOwnerId(context.Context, *ShopByOwnerId) (*Shop, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShopByOwnerId not implemented")
 }
 
 func RegisterShopServiceServer(s *grpc.Server, srv ShopServiceServer) {
 	s.RegisterService(&_ShopService_serviceDesc, srv)
 }
 
-func _ShopService_GetAllShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReqAllShop)
+func _ShopService_GetShopByOwnerId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShopByOwnerId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShopServiceServer).GetAllShop(ctx, in)
+		return srv.(ShopServiceServer).GetShopByOwnerId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.ShopService/GetAllShop",
+		FullMethod: "/proto.ShopService/GetShopByOwnerId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopServiceServer).GetAllShop(ctx, req.(*ReqAllShop))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ShopService_GetShopByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShopByID)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShopServiceServer).GetShopByID(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.ShopService/GetShopByID",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShopServiceServer).GetShopByID(ctx, req.(*ShopByID))
+		return srv.(ShopServiceServer).GetShopByOwnerId(ctx, req.(*ShopByOwnerId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -446,12 +482,8 @@ var _ShopService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ShopServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetAllShop",
-			Handler:    _ShopService_GetAllShop_Handler,
-		},
-		{
-			MethodName: "GetShopByID",
-			Handler:    _ShopService_GetShopByID_Handler,
+			MethodName: "GetShopByOwnerId",
+			Handler:    _ShopService_GetShopByOwnerId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

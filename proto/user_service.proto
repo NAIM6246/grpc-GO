@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./;proto";
+
+message ReqUser{
+    int32 Id  = 1;
+}
+
+message ResUser{
+    int32 Id  = 1;
+    string Name = 2;
+}
+
+service UserService {
+    rpc GetUser(ReqUser) returns (ResUser);
+}
