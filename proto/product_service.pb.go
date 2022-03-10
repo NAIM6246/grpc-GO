@@ -206,13 +206,14 @@ var file_product_service_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x22, 0x29, 0x0a, 0x0f, 0x52, 0x65, 0x71, 0x53, 0x68,
 	0x6f, 0x70, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x53, 0x68,
 	0x6f, 0x70, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x53, 0x68, 0x6f, 0x70,
-	0x49, 0x64, 0x32, 0x58, 0x0a, 0x0e, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x46, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x53, 0x68, 0x6f, 0x70, 0x50,
+	0x49, 0x64, 0x32, 0x5a, 0x0a, 0x0e, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x48, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x53, 0x68, 0x6f, 0x70, 0x50,
 	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x42, 0x79, 0x53, 0x68, 0x6f, 0x70, 0x49, 0x64, 0x12,
 	0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x71, 0x53, 0x68, 0x6f, 0x70, 0x50,
 	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x1a, 0x13, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x53, 0x68, 0x6f, 0x70, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x42, 0x0a, 0x5a, 0x08,
-	0x2e, 0x2f, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x53, 0x68, 0x6f, 0x70, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x73, 0x30, 0x01, 0x42, 0x0a,
+	0x5a, 0x08, 0x2e, 0x2f, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -319,7 +320,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProductServiceClient interface {
-	GetShopProductsByShopId(ctx context.Context, in *ReqShopProducts, opts ...grpc.CallOption) (*ShopProducts, error)
+	GetShopProductsByShopId(ctx context.Context, in *ReqShopProducts, opts ...grpc.CallOption) (ProductService_GetShopProductsByShopIdClient, error)
 }
 
 type productServiceClient struct {
@@ -330,59 +331,86 @@ func NewProductServiceClient(cc grpc.ClientConnInterface) ProductServiceClient {
 	return &productServiceClient{cc}
 }
 
-func (c *productServiceClient) GetShopProductsByShopId(ctx context.Context, in *ReqShopProducts, opts ...grpc.CallOption) (*ShopProducts, error) {
-	out := new(ShopProducts)
-	err := c.cc.Invoke(ctx, "/proto.ProductService/GetShopProductsByShopId", in, out, opts...)
+func (c *productServiceClient) GetShopProductsByShopId(ctx context.Context, in *ReqShopProducts, opts ...grpc.CallOption) (ProductService_GetShopProductsByShopIdClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ProductService_serviceDesc.Streams[0], "/proto.ProductService/GetShopProductsByShopId", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &productServiceGetShopProductsByShopIdClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ProductService_GetShopProductsByShopIdClient interface {
+	Recv() (*ShopProducts, error)
+	grpc.ClientStream
+}
+
+type productServiceGetShopProductsByShopIdClient struct {
+	grpc.ClientStream
+}
+
+func (x *productServiceGetShopProductsByShopIdClient) Recv() (*ShopProducts, error) {
+	m := new(ShopProducts)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // ProductServiceServer is the server API for ProductService service.
 type ProductServiceServer interface {
-	GetShopProductsByShopId(context.Context, *ReqShopProducts) (*ShopProducts, error)
+	GetShopProductsByShopId(*ReqShopProducts, ProductService_GetShopProductsByShopIdServer) error
 }
 
 // UnimplementedProductServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedProductServiceServer struct {
 }
 
-func (*UnimplementedProductServiceServer) GetShopProductsByShopId(context.Context, *ReqShopProducts) (*ShopProducts, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetShopProductsByShopId not implemented")
+func (*UnimplementedProductServiceServer) GetShopProductsByShopId(*ReqShopProducts, ProductService_GetShopProductsByShopIdServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetShopProductsByShopId not implemented")
 }
 
 func RegisterProductServiceServer(s *grpc.Server, srv ProductServiceServer) {
 	s.RegisterService(&_ProductService_serviceDesc, srv)
 }
 
-func _ProductService_GetShopProductsByShopId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReqShopProducts)
-	if err := dec(in); err != nil {
-		return nil, err
+func _ProductService_GetShopProductsByShopId_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ReqShopProducts)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).GetShopProductsByShopId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.ProductService/GetShopProductsByShopId",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).GetShopProductsByShopId(ctx, req.(*ReqShopProducts))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(ProductServiceServer).GetShopProductsByShopId(m, &productServiceGetShopProductsByShopIdServer{stream})
+}
+
+type ProductService_GetShopProductsByShopIdServer interface {
+	Send(*ShopProducts) error
+	grpc.ServerStream
+}
+
+type productServiceGetShopProductsByShopIdServer struct {
+	grpc.ServerStream
+}
+
+func (x *productServiceGetShopProductsByShopIdServer) Send(m *ShopProducts) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 var _ProductService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.ProductService",
 	HandlerType: (*ProductServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "GetShopProductsByShopId",
-			Handler:    _ProductService_GetShopProductsByShopId_Handler,
+			StreamName:    "GetShopProductsByShopId",
+			Handler:       _ProductService_GetShopProductsByShopId_Handler,
+			ServerStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "product_service.proto",
 }
