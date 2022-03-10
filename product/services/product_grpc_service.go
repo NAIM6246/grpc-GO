@@ -1,9 +1,9 @@
 package services
 
 import (
-	"context"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/naim6246/grpc-GO/product/mapper"
 	"github.com/naim6246/grpc-GO/product/models"
@@ -29,16 +29,15 @@ func (p *ProductService) StartProductGrpcServer() {
 	models.Wg.Done()
 }
 
-func (p *ProductService) GetShopProductsByShopId(ctx context.Context, in *proto.ReqShopProducts) (*proto.ShopProducts, error) {
+func (p *ProductService) GetShopProductsByShopId(in *proto.ReqShopProducts, stream proto.ProductService_GetShopProductsByShopIdServer) error {
 	products, err := p.GetShopProducts(in.GetShopId())
 	if err != nil {
-		return nil, err
+		return err
 	}
-	var shopProducts []*proto.Product
+
 	for _, product := range products {
-		shopProducts = append(shopProducts, mapper.MapProductToGrpcModel(product))
+		stream.Send(mapper.MapProductToGrpcModel(product))
+		time.Sleep(time.Second * 1)
 	}
-	return &proto.ShopProducts{
-		Products: shopProducts,
-	}, nil
+	return nil
 }

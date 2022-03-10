@@ -28,5 +28,5 @@ func (p *ProductService) GetShopProducts(shopId int32) ([]*models.Product, error
 }
 
 func (p *ProductService) GetAllProducts() ([]*models.Product, error) {
-	return p.productRepository.GetAllByFilter("")
+	return p.productRepository.GetAll()
 }

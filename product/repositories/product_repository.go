@@ -38,3 +38,11 @@ func (repo *ProductRepository) GetAllByFilter(filter interface{}, args ...interf
 	}
 	return products, nil
 }
+
+func (repo *ProductRepository) GetAll() ([]*models.Product, error) {
+	var products []*models.Product
+	if err := repo.db.Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, nil
+}

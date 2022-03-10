@@ -24,11 +24,11 @@ func NewProductHandler(productService *services.ProductService) *ProductHandler 
 func (h *ProductHandler) Handler() {
 	router := chi.NewRouter()
 
-	router.Route("/products", func(router chi.Router) {
+	router.Route("/product", func(router chi.Router) {
 		router.Post("/", h.createProduct)
 		router.Get("/{id}", h.getProductById)
-		router.Get("/", h.getAllProducts)
 	})
+	router.Get("/products", h.getAllProducts)
 
 	fmt.Println("Product Api server is running on port: 8082")
 	http.ListenAndServe(":8082", router)
@@ -42,8 +42,14 @@ func (h *ProductHandler) createProduct(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err)
 		return
 	}
+	productCreated, err := h.productService.CreateProduct(&product)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err)
+		return
+	}
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(product)
+	json.NewEncoder(w).Encode(productCreated)
 }
 
 func (h *ProductHandler) getProductById(w http.ResponseWriter, r *http.Request) {

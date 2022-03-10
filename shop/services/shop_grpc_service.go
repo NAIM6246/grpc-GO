@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 
 	"github.com/naim6246/grpc-GO/proto"
@@ -42,5 +43,27 @@ func (s *ShopService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwne
 }
 
 func (s *ShopService) GetShopProductsByShopId(ctx context.Context, in *proto.ReqShopProducts) (*proto.ShopProducts, error) {
-	return (*s.productClient).GetShopProductsByShopId(ctx, in)
+	// return (*s.productClient).GetShopProductsByShopId(ctx, in)
+	productStream, err := (*s.productClient).GetShopProductsByShopId(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	var shopProducts []*proto.Product
+	count := 1
+	for {
+		product, err := productStream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Println("Error while receiving a product")
+			// break
+		}
+		fmt.Println("Product received ", count)
+		count++
+		shopProducts = append(shopProducts, product)
+	}
+	return &proto.ShopProducts{
+		Products: shopProducts,
+	}, nil
 }

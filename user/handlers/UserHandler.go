@@ -25,12 +25,14 @@ func (u *UserHandler) Handler() {
 	//creating a http router
 	router := chi.NewRouter()
 
-	router.Post("/", u.createUser)
-	router.Get("/{userId}", u.getUserById)
-	router.Get("/user/{userId}/shop", u.getShopByUserId)
+	router.Route("/user", func(router chi.Router) {
+		router.Post("/", u.createUser)
+		router.Get("/{userId}", u.getUserById)
+		router.Get("/{userId}/shop", u.getShopByUserId)
+	})
 	router.Get("/users", u.getAllUser)
 
-	fmt.Println("Running client on port : 8081")
+	fmt.Println("Running user api client on port : 8081")
 	http.ListenAndServe(":8081", router)
 	models.Wg.Done()
 }

@@ -27,22 +27,19 @@ func NewShopHandler(shopService *services.ShopService) *ShopHandler {
 func (h *ShopHandler) Handler() {
 	router := chi.NewRouter()
 	router.Route("/shop", func(router chi.Router) {
-		router.Get("/", h.getAllShop)
 		router.Post("/", h.createShop)
-
-		router.Route("/{shopId}", func(r chi.Router) {
+		router.Route("/{shopId}", func(router chi.Router) {
 			router.Get("/", h.getShopById)
 			router.Get("/details", h.getShopDetails)
-			router.Get("/products",h.getShopProducts)
+			router.Get("/products", h.getShopProducts)
 		})
 	})
+	router.Get("/shops", h.getAllShop)
 
-	fmt.Println("serving api server on port: 8083")
+	fmt.Println("shop api server running on port: 8083")
 	http.ListenAndServe(":8083", router)
 	Wg.Done()
 }
-
-
 
 func (h *ShopHandler) createShop(w http.ResponseWriter, r *http.Request) {
 	var shop models.Shop
