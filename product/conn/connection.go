@@ -4,19 +4,15 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/jinzhu/gorm"
 	"github.com/naim6246/grpc-GO/product/config"
 	"github.com/naim6246/grpc-GO/product/models"
-
-	//sqlite
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type DB struct {
 	*gorm.DB
 }
-
-const dbType = "sqlite3"
 
 var (
 	connDBOnce sync.Once
@@ -35,8 +31,8 @@ func ConnectDB(config *config.DBConfig) *DB {
 }
 
 func connectDB(config *config.DBConfig) error {
-	connectionString := fmt.Sprintf("%s.db", config.DBName)
-	conn, err := gorm.Open(dbType, connectionString)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.User, config.Password, config.Host, config.Port, config.DBName)
+	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err
 	}

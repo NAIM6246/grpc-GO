@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/naim6246/grpc-GO/user/conn"
 	"github.com/naim6246/grpc-GO/user/models"
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
@@ -12,7 +12,7 @@ type UserRepository struct {
 
 func NewUserRepository(db *conn.DB) *UserRepository {
 	return &UserRepository{
-		db: db.Table(models.UsersTable()),
+		db: db.DB,
 	}
 }
 

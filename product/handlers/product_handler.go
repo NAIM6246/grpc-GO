@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/naim6246/grpc-GO/param"
@@ -29,9 +30,13 @@ func (h *ProductHandler) Handler() {
 		router.Get("/{id}", h.getProductById)
 		router.Get("/", h.getAllProducts)
 	})
+	var port string = "8082"
+	if val, exists := os.LookupEnv("PORDUCT_SERVICE_PORT"); exists {
+		port = val
+	}
 
-	fmt.Println("Product Api server is running on port: 8082")
-	http.ListenAndServe(":8082", router)
+	fmt.Println("Product Api server is running on port: ", port)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 	models.Wg.Done()
 }
 

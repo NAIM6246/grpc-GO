@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/naim6246/grpc-GO/shop/conn"
 	"github.com/naim6246/grpc-GO/shop/models"
+	"gorm.io/gorm"
 )
 
 type ShopRepository struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/naim6246/grpc-GO/param"
@@ -30,8 +31,13 @@ func (u *UserHandler) Handler() {
 	router.Get("/user/{userId}/shop", u.getShopByUserId)
 	router.Get("/users", u.getAllUser)
 
-	fmt.Println("Running client on port : 8081")
-	http.ListenAndServe(":8081", router)
+	var port string = "8081"
+	if val, exists := os.LookupEnv("PORDUCT_SERVICE_PORT"); exists {
+		port = val
+	}
+
+	fmt.Println("Running client on port : ", port)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 	models.Wg.Done()
 }
 

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/go-chi/chi/v5"
@@ -37,8 +38,13 @@ func (h *ShopHandler) Handler() {
 		})
 	})
 
-	fmt.Println("serving api server on port: 8083")
-	http.ListenAndServe(":8083", router)
+	var port string = "8083"
+	if val, exists := os.LookupEnv("SHOP_SERVICE_PORT"); exists {
+		port = val
+	}
+
+	fmt.Println("serving api server on port: ", port)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 	Wg.Done()
 }
 

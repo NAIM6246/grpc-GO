@@ -1,10 +1,13 @@
 package config
 
-import "sync"
+import (
+	"os"
+	"sync"
+)
 
 type DBConfig struct {
 	Port     int
-	Server   string
+	Host     string
 	DBName   string
 	User     string
 	Password string
@@ -22,10 +25,10 @@ func NewDBConfig() *DBConfig {
 
 func mapDBConfig() {
 	dbConfig = &DBConfig{
-		Port:     0,
-		Server:   "",
+		Host:     os.Getenv("DB_HOST"),
+		Port:     3306,
 		DBName:   "ProductDatabase",
-		User:     "",
+		User:     "root",
 		Password: "",
 	}
 }
