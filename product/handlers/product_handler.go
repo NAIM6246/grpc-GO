@@ -42,8 +42,16 @@ func (h *ProductHandler) createProduct(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err)
 		return
 	}
+
+	pr, err := h.productService.CreateProduct(&product)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err)
+		return
+	}
+
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(product)
+	json.NewEncoder(w).Encode(pr)
 }
 
 func (h *ProductHandler) getProductById(w http.ResponseWriter, r *http.Request) {

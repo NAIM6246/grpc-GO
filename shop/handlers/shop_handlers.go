@@ -26,14 +26,14 @@ func NewShopHandler(shopService *services.ShopService) *ShopHandler {
 
 func (h *ShopHandler) Handler() {
 	router := chi.NewRouter()
-	router.Route("/shop", func(router chi.Router) {
-		router.Get("/", h.getAllShop)
-		router.Post("/", h.createShop)
+	router.Route("/shops", func(r chi.Router) {
+		r.Post("/", h.createShop)
+		r.Get("/", h.getAllShop)
 
-		router.Route("/{shopId}", func(r chi.Router) {
-			router.Get("/", h.getShopById)
-			router.Get("/details", h.getShopDetails)
-			router.Get("/products",h.getShopProducts)
+		r.Route("/{shopId}", func(r2 chi.Router) {
+			r2.Get("/", h.getShopById)
+			r2.Get("/details", h.getShopDetails)
+			r2.Get("/products", h.getShopProducts)
 		})
 	})
 
@@ -41,8 +41,6 @@ func (h *ShopHandler) Handler() {
 	http.ListenAndServe(":8083", router)
 	Wg.Done()
 }
-
-
 
 func (h *ShopHandler) createShop(w http.ResponseWriter, r *http.Request) {
 	var shop models.Shop
@@ -76,6 +74,7 @@ func (h *ShopHandler) getShopById(w http.ResponseWriter, r *http.Request) {
 func (h *ShopHandler) getAllShop(w http.ResponseWriter, r *http.Request) {
 	shops, err := h.shopService.GetAllShops()
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(err)
 		return
