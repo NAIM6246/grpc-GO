@@ -15,7 +15,7 @@ type ShopService struct {
 	userClient     *proto.UserServiceClient
 	productClient  *proto.ProductServiceClient
 	shopRepository *repositories.ShopRepository
-	proto.UnimplementedProductServiceServer
+	proto.UnimplementedShopServiceServer
 }
 
 func NewShopService(shopRepository *repositories.ShopRepository) *ShopService {
