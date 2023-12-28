@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/naim6246/grpc-GO/shop/conn"
 	"github.com/naim6246/grpc-GO/shop/models"
 	"gorm.io/gorm"
@@ -12,7 +14,7 @@ type ShopRepository struct {
 
 func NewShopRepository(db *conn.DB) *ShopRepository {
 	return &ShopRepository{
-		db: db.Table(models.ShopTableName()),
+		db: db.DB,
 	}
 }
 
@@ -34,6 +36,7 @@ func (repo *ShopRepository) GetAll() ([]*models.Shop, error) {
 func (repo *ShopRepository) GetById(id int32) (*models.Shop, error) {
 	var shop models.Shop
 	if err := repo.db.Where("id=?", id).First(&shop).Error; err != nil {
+		fmt.Println("error: ", err)
 		return nil, err
 	}
 	return &shop, nil

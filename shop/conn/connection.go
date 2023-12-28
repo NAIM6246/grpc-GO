@@ -11,8 +11,6 @@ import (
 	"gorm.io/gorm"
 )
 
-const dbType = "sqlite3"
-
 var (
 	connDBOnce sync.Once
 	dbInstance *DB
@@ -30,6 +28,7 @@ func connectDB(config *config.DBConfig) error {
 		return err
 	}
 	fmt.Println("Database connected successfully.")
+	conn.AutoMigrate(&models.Shop{})
 	dbInstance = &DB{conn}
 	return nil
 }
@@ -42,8 +41,4 @@ func ConnectDB(config *config.DBConfig) *DB {
 		}
 	})
 	return dbInstance
-}
-
-func (db *DB) Migration() {
-	db.AutoMigrate(&models.Shop{})
 }

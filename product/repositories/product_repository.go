@@ -12,7 +12,7 @@ type ProductRepository struct {
 
 func NewProductRepository(db *conn.DB) *ProductRepository {
 	return &ProductRepository{
-		db: db.Table(models.ProductTabelName()),
+		db: db.DB,
 	}
 }
 

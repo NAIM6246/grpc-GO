@@ -13,7 +13,6 @@ var dbInstance *conn.DB
 func init() {
 	dbConfig := config.NewDBConfig()
 	dbInstance = conn.ConnectDB(dbConfig)
-	dbInstance.Migration()
 }
 
 func main() {
