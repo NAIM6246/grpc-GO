@@ -28,17 +28,23 @@ func (s *ShopService) GetUser(ctx context.Context, in *proto.ReqUser) (*proto.Re
 	return (*s.userClient).GetUser(ctx, in)
 }
 
-func (s *ShopService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.Shop, error) {
+func (s *ShopService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.AllShop, error) {
 	id := in.GetOwnerId()
-	shop, err := s.GetShopByOwnerID(id)
+	res, err := s.GetShopByOwnerID(id)
 	if err != nil {
 		return nil, err
 	}
-	return &proto.Shop{
-		Id:      shop.Id,
-		Name:    shop.Name,
-		OwnerId: shop.OwnerId,
-	}, nil
+
+	shops := make([]*proto.Shop, 0)
+
+	for i := range res {
+		shops = append(shops, &proto.Shop{
+			Id:      res[i].Id,
+			Name:    res[i].Name,
+			OwnerId: res[i].OwnerId,
+		})
+	}
+	return &proto.AllShop{Shop: shops}, nil
 }
 
 func (s *ShopService) GetShopProductsByShopId(ctx context.Context, in *proto.ReqShopProducts) (*proto.ShopProducts, error) {

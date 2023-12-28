@@ -18,7 +18,6 @@ type ShopService struct {
 }
 
 func NewShopService(shopRepository *repositories.ShopRepository) *ShopService {
-
 	connToProduct, err := grpc.Dial("localhost:4041", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
@@ -46,7 +45,7 @@ func (s *ShopService) GetShopByID(id int32) (*models.Shop, error) {
 func (s *ShopService) GetAllShops() ([]*models.Shop, error) {
 	return s.shopRepository.GetAll()
 }
-func (s *ShopService) GetShopByOwnerID(id int32) (*models.Shop, error) {
+func (s *ShopService) GetShopByOwnerID(id int32) ([]*models.Shop, error) {
 	return s.shopRepository.GetByFilter("owner_id=?", id)
 }
 
