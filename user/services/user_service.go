@@ -14,6 +14,7 @@ type UserService struct {
 	shopClinet     *proto.ShopServiceClient
 	productClinet  *proto.ProductServiceClient
 	userRepository *repositories.UserRepository
+	proto.UnimplementedUserServiceServer
 }
 
 func NewUserService(userRepository *repositories.UserRepository) *UserService {
@@ -48,16 +49,23 @@ func (u *UserService) GetAllUser() ([]*models.User, error) {
 	return u.userRepository.GetAll()
 }
 
-func (u *UserService) GetUserShopDetails(userId int) (*models.Shop, error) {
+func (u *UserService) GetUserShopDetails(userId int) ([]*models.Shop, error) {
 	res, err := u.GetShopByOwnerId(context.TODO(), &proto.ShopByOwnerId{
 		OwnerId: int32(userId),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &models.Shop{
-		Id:      res.Id,
-		Name:    res.Name,
-		OwnerId: res.OwnerId,
-	}, nil
+
+	shops := make([]*models.Shop, 0)
+
+	for _, s := range res.Shop {
+		shops = append(shops, &models.Shop{
+			Id:      s.Id,
+			Name:    s.Name,
+			OwnerId: s.OwnerId,
+		})
+	}
+
+	return shops, nil
 }

@@ -36,6 +36,6 @@ func (u *UserService) GetUser(ctx context.Context, in *proto.ReqUser) (*proto.Re
 	return mapper.MapUserToGrpcModel(user), nil
 }
 
-func (u *UserService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.Shop, error) {
+func (u *UserService) GetShopByOwnerId(ctx context.Context, in *proto.ShopByOwnerId) (*proto.AllShop, error) {
 	return (*u.shopClinet).GetShopByOwnerId(ctx, in)
 }

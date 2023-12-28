@@ -3,10 +3,12 @@ package services
 import (
 	"github.com/naim6246/grpc-GO/product/models"
 	"github.com/naim6246/grpc-GO/product/repositories"
+	"github.com/naim6246/grpc-GO/proto"
 )
 
 type ProductService struct {
 	productRepository *repositories.ProductRepository
+	proto.UnimplementedProductServiceServer
 }
 
 func NewProductService(productRepository *repositories.ProductRepository) *ProductService {
