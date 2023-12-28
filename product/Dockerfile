@@ -1,5 +1,5 @@
 from golang:1.17 
-copy bin/main /product
+copy bin/product /product
 
 EXPOSE 8083
 entrypoint ["/product"]

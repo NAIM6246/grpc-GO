@@ -39,12 +39,12 @@ func (repo *ShopRepository) GetById(id int32) (*models.Shop, error) {
 	return &shop, nil
 }
 
-func (repo *ShopRepository) GetByFilter(filter interface{}, args ...interface{}) (*models.Shop, error) {
-	var shop models.Shop
-	if err := repo.db.Where(filter, args...).First(&shop).Error; err != nil {
+func (repo *ShopRepository) GetByFilter(filter interface{}, args ...interface{}) ([]*models.Shop, error) {
+	var shop []*models.Shop
+	if err := repo.db.Where(filter, args...).Find(&shop).Error; err != nil {
 		return nil, err
 	}
-	return &shop, nil
+	return shop, nil
 }
 
 // func (repo *ShopRepository) GetShopByOwnerId(id int32) (*models.Shop, error) {

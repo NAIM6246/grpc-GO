@@ -1,5 +1,5 @@
 from golang:1.17 
-copy bin/main /shop
+copy bin/shop /shop
 
 EXPOSE 8082
 entrypoint [ "/shop" ]

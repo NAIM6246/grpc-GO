@@ -48,6 +48,10 @@ func (h *ProductHandler) createProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if price, err := param.LookupEnvInt64("PRODUCT_PRICE"); err == nil {
+		product.Price = price
+	}
+
 	pr, err := h.productService.CreateProduct(&product)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

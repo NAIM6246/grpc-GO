@@ -32,9 +32,11 @@ func (u *UserHandler) Handler() {
 	router.Get("/users", u.getAllUser)
 
 	var port string = "8081"
-	if val, exists := os.LookupEnv("PORDUCT_SERVICE_PORT"); exists {
+	val, exists := os.LookupEnv("USER_SERVICE_PORT")
+	if exists {
 		port = val
 	}
+	fmt.Println(val)
 
 	fmt.Println("Running client on port : ", port)
 	http.ListenAndServe(fmt.Sprintf(":%s", port), router)

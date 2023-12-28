@@ -9,7 +9,7 @@ func MapProductToGrpcModel(product *models.Product) *proto.Product {
 	return &proto.Product{
 		Id:     product.Id,
 		Name:   product.Name,
-		Price:  product.Price,
+		Price:  int32(product.Price),
 		ShopId: product.ShopId,
 	}
 }

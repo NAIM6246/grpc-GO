@@ -5,7 +5,7 @@ import "sync"
 type Product struct {
 	Id     int32
 	Name   string
-	Price  int32
+	Price  int64
 	ShopId int32
 }
 
