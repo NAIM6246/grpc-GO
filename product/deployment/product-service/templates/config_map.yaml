@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: product-cm
+data:
+  product-price: "456"
+  db-host: host.docker.internal
