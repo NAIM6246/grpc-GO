@@ -48,7 +48,8 @@ func (h *ProductHandler) createProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if price, err := param.LookupEnvInt64("PRODUCT_PRICE"); err == nil {
+	path := "/config/product-price"
+	if price, err := param.GetPriceFromConfig(path); err == nil {
 		product.Price = price
 	}
 
