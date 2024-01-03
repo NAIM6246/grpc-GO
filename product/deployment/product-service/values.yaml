@@ -45,7 +45,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: product-service
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -54,31 +54,31 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# Sample Prometheus configurations
-prometheus:
-  server:
-    global:
-      scrape_interval: 15s
-      evaluation_interval: 15s
+# # Sample Prometheus configurations
+# prometheus:
+#   server:
+#     global:
+#       scrape_interval: 15s
+#       evaluation_interval: 15s
 
-  alerting:
-    alertmanagers:
-    - static_configs:
-      - targets:
-        - 'alertmanager:9093'
+#   alerting:
+#     alertmanagers:
+#     - static_configs:
+#       - targets:
+#         - 'alertmanager:9093'
 
-# Sample Alertmanager configurations
-alertmanager:
-  config:
-    global:
-      resolve_timeout: 5m
-    receivers:
-    - name: 'webhook-notifications'
-      webhook_configs:
-      - url: 'http://your-endpoint-url'
+# # Sample Alertmanager configurations
+# alertmanager:
+#   config:
+#     global:
+#       resolve_timeout: 5m
+#     receivers:
+#     - name: 'webhook-notifications'
+#       webhook_configs:
+#       - url: 'http://your-endpoint-url'
 
-  route:
-    receiver: 'webhook-notifications'
+#   route:
+#     receiver: 'webhook-notifications'
 
 
 resources: {}

@@ -1,0 +1,14 @@
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 1m
+    route:
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 10s
+      receiver: 'webhook'
+      routes: []
+    receivers:
+    - name: 'webhook'
+      webhook_configs:
+      - url: 'http://192.168.0.102:8082/test'

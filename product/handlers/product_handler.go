@@ -25,6 +25,7 @@ func NewProductHandler(productService *services.ProductService) *ProductHandler 
 func (h *ProductHandler) Handler() {
 	router := chi.NewRouter()
 
+	router.Post("/test", h.test)
 	router.Route("/products", func(router chi.Router) {
 		router.Post("/", h.createProduct)
 		router.Get("/{id}", h.getProductById)
@@ -38,6 +39,14 @@ func (h *ProductHandler) Handler() {
 	fmt.Println("Product Api server is running on port: ", port)
 	http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 	models.Wg.Done()
+}
+
+
+func (u *ProductHandler) test(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(*r)
+	fmt.Println("alert received")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode("")
 }
 
 func (h *ProductHandler) createProduct(w http.ResponseWriter, r *http.Request) {
