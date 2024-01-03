@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  alertmanager.yml: |
+    receivers:
+    - name: 'webhook-notifications'
+      webhook_configs:
+      - url: 'http://your-endpoint-url'
+  
+    route:
+      receiver: 'webhook-notifications'
