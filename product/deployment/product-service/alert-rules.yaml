@@ -4,15 +4,15 @@ additionalPrometheusRulesMap:
   - name: GroupA
     rules:
     - alert: InstanceLowMemory
-      expr: :node_memory_MemAvailable_bytes:sum < 50668858390345635
+      expr: :node_memory_MemAvailable_bytes:sum < 4567567586987979798798797
       for: 30s
       labels:
         severity: critical
       annotations:
         summary: “Instance [{{ $labels.host }}:] memory low”
         description: “{{ $labels.host }} has less than 50G memory available”
-    - alert: InstanceDown
-      expr: up == 0
+    - alert: InstanceUp
+      expr: up > 0
       for: 10s
       labels:
         severity: critical

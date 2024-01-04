@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata: 
   name: product-cm
 data:
-  product-price: "456"
+  product-price: "555"
   db-host: host.docker.internal
