@@ -4,11 +4,12 @@ alertmanager:
       resolve_timeout: 30s
     route:
       group_wait: 1s
-      group_interval: 30s
-      repeat_interval: 30s
+      group_interval: 2m
+      repeat_interval: 10s
       receiver: 'webhook'
       routes: []
     receivers:
     - name: 'webhook'
       webhook_configs:
-      - url: 'http://10.244.0.5:8082/alert'
+      - url: 'http://10.244.0.26:8082/alert'
+        send_resolved: true

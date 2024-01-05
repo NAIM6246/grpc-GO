@@ -12,7 +12,7 @@ additionalPrometheusRulesMap:
         summary: “Instance [{{ $labels.host }}:] memory low”
         description: “{{ $labels.host }} has less than 50G memory available”
     - alert: InstanceUp
-      expr: up > 0
+      expr: up > 1
       for: 10s
       labels:
         severity: critical

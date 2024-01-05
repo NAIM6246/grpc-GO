@@ -47,7 +47,19 @@ func (h *ProductHandler) Handler() {
 }
 
 func (u *ProductHandler) updateConfig(w http.ResponseWriter, r *http.Request) {
+	var al models.AlertReq
+	if err := json.NewDecoder(r.Body).Decode(&al); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(err)
+		return
+	}
 	fmt.Println("alert received")
+	fmt.Println("alerts: ", al.Alerts)
+	for i := range al.Alerts {
+		fmt.Println("alert-",i,": ", al.Alerts[i])
+	}
+
+
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		fmt.Println("error while getting cluster config, error: ", err)

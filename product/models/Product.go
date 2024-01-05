@@ -14,3 +14,17 @@ func ProductTabelName() string {
 }
 
 var Wg sync.WaitGroup
+
+type AlertReq struct {
+	GroupKey          string
+	Status            string
+	GroupLabels       map[string]interface{}
+	CommonLabels      map[string]interface{}
+	CommonAnnotations map[string]interface{}
+	Alerts            []Alert
+}
+
+type Alert struct {
+	Labels      map[string]interface{}
+	Annotations map[string]interface{}
+}
